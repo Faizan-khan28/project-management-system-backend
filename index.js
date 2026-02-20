@@ -2,6 +2,7 @@ import express from "express"
 import connectDb from "./config/db.js";
 import dotenv from "dotenv"
 import cors from "cors"
+import productRouter from "./routes/productRoute.js";
 
 const app = express()
 dotenv.config()
@@ -13,12 +14,10 @@ app.use(express.json());
 app.use(cors({
    origin : "http://localhost:5173",
    credentials : true,
-   methods : "GET,POST,PUT,DELETE",
+   methods : "GET,POST,PUT,PATCH,DELETE",
 }))
 
-app.get("/",(req ,res)=> {
-    return res.status(200).json({message: "product management system"})
-})
+app.use("/api/products",productRouter)
 
 app.listen(PORT,()=> {
     connectDb()
