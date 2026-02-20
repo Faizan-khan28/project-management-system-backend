@@ -16,6 +16,10 @@ app.use(cors({
    methods : "GET,POST,PUT,DELETE",
 }))
 
+app.get("/",(req ,res)=> {
+    return res.status(200).json({message: "product management system"})
+})
+
 app.listen(PORT,()=> {
     connectDb()
     console.log(`Server started at ${PORT}`)
