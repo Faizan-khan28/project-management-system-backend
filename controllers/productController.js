@@ -64,3 +64,23 @@ export const updateProduct = async (req,res) => {
         return res.status(500).json({message: `Error in updateProduct ${error.message}`})
     }
 }
+
+export const deleteProduct = async (req,res) => {
+    try {
+        const productId = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            return res.status(400).json({
+            message: "Invalid product ID"
+          });
+        }
+        const deleteProduct = await Product.findByIdAndDelete(productId)
+        if (!deleteProduct) {
+           return res.status(404).json({
+           message: "Product not found"
+         });
+        }
+        return res.status(200).json({message:"Product deleted successfully",deleteProduct})
+    } catch (error) {
+        return res.status(500).json({message: `Error in deleteProduct ${error.message}`})
+    }
+}
