@@ -1,4 +1,4 @@
-import Product from "../model/product";
+import Product from "../model/product.js";
 
 export const createProduct = async (req,res) => {
     try {
@@ -40,5 +40,27 @@ export const getSingleProduct = async (req,res) => {
         return res.status(200).json({message:"Product fetched successfully",product})
     } catch (error) {
         return res.status(500).json({message: `Error in getSingleProduct ${error.message}`})
+    }
+}
+
+export const updateProduct = async (req,res) => {
+    try {
+        const productId = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            return res.status(400).json({
+            message: "Invalid product ID"
+          });
+        }
+        const updatedProduct = await Product.findByIdAndUpdate(
+            productId,
+            req.body,
+            {new:true, runValidators:true}
+        )
+        if(!updatedProduct) {
+            return res.status(400).json({message: "product not found"})
+        }
+       return res.status(200).json({message:"Product Updated successfully",updatedProduct})
+    } catch (error) {
+        return res.status(500).json({message: `Error in updateProduct ${error.message}`})
     }
 }
